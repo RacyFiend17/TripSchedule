@@ -9,6 +9,16 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+//            TestAllStationService.testFetchAllStations()
+//            TestNearestStationService.testFetchStations()
+//            TestScheduleBetweenStationsService.testFetchScheduleBetweenStations()
+//            TestStationScheduleService.testFetchStationSchedule()
+//            TestRouteStationsService.testFetchRouteStations()
+//            TestNearestCityService.testFetchNearestCity()
+//            TestCarrierInfoService.testFetchCarrierInfo()
+            TestCopyrightService.testCopyright()
+        }
     }
 }
 
