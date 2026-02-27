@@ -7,15 +7,7 @@ protocol CarrierInfoServiceProtocol {
     func getCarrierInfo(code: String, system: String) async throws -> Carrier
 }
 
-final class CarrierInfoService: CarrierInfoServiceProtocol {
-    
-    private let client: Client
-    private let apiKey: String
-    
-    init(client: Client, apiKey: String) {
-        self.client = client
-        self.apiKey = apiKey
-    }
+final class CarrierInfoService: BaseService, CarrierInfoServiceProtocol {
     
     func getCarrierInfo(code: String, system: String) async throws -> Carrier{
         

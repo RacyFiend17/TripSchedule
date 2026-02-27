@@ -7,15 +7,7 @@ protocol StationScheduleServiceProtocol {
     func getStationSchedule(station: String) async throws -> Schedule
 }
 
-final class StationScheduleService: StationScheduleServiceProtocol {
-    
-    private let client: Client
-    private let apiKey: String
-    
-    init(client: Client, apiKey: String) {
-        self.client = client
-        self.apiKey = apiKey
-    }
+final class StationScheduleService: BaseService, StationScheduleServiceProtocol {
     
     func getStationSchedule(station: String) async throws -> Schedule {
         

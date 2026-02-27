@@ -7,15 +7,7 @@ protocol RouteStationsServiceProtocol {
     func getRouteStations(uid: String) async throws -> ThreadStations
 }
 
-final class RouteStationsService: RouteStationsServiceProtocol {
-    
-    private let client: Client
-    private let apiKey: String
-    
-    init(client: Client, apiKey: String) {
-        self.client = client
-        self.apiKey = apiKey
-    }
+final class RouteStationsService: BaseService, RouteStationsServiceProtocol {
     
     func getRouteStations(uid: String) async throws -> ThreadStations {
         

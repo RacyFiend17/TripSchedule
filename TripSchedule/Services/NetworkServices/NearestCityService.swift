@@ -7,15 +7,7 @@ protocol NearestCityServiceProtocol {
     func getNearestCity(lat: Double, lng: Double) async throws -> NearestCity
 }
 
-final class NearestCityService: NearestCityServiceProtocol {
-    
-    private let client: Client
-    private let apiKey: String
-    
-    init(client: Client, apiKey: String) {
-        self.client = client
-        self.apiKey = apiKey
-    }
+final class NearestCityService: BaseService, NearestCityServiceProtocol {
     
     func getNearestCity(lat: Double, lng: Double) async throws -> NearestCity {
         
