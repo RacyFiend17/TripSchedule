@@ -54,9 +54,9 @@ struct SelectionView<Item: SelectableItem>: View {
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.ypBlack)
+                                    .imageScale(.large)
                             }
                             .padding()
-//                            .contentShape(Rectangle())
                         }
                     }
                 }
