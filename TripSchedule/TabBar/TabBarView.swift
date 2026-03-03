@@ -5,7 +5,7 @@ struct TabBarView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            ErrorView(errorType: AppErrorType.noInternet)
+            MainView()
             .tabItem {
                Image("scheduleTabBarItem")
                     .renderingMode(.template)
