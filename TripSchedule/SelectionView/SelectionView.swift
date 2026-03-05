@@ -41,22 +41,33 @@ struct SelectionView<Item: SelectableItem>: View {
             .cornerRadius(10)
             .padding(.horizontal, 16)
             
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(filteredItems) { item in
-                        Button {
-                            onSelect(item)
-                        } label: {
-                            HStack {
-                                Text(item.name)
-                                    .font(.system(size: 17))
-                                    .foregroundStyle(Color(.ypBlack))
+            if filteredItems.isEmpty {
+                            VStack {
                                 Spacer()
-                                Image(systemName: "chevron.right")
+                                Text(title == "Выбор города" ? "Город не найден" : "Станция не найдена")
+                                    .font(.system(size: 24, weight: .bold))
                                     .foregroundColor(.ypBlack)
-                                    .imageScale(.large)
+                                Spacer()
                             }
-                            .padding()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(filteredItems) { item in
+                            Button {
+                                onSelect(item)
+                            } label: {
+                                HStack {
+                                    Text(item.name)
+                                        .font(.system(size: 17))
+                                        .foregroundStyle(Color(.ypBlack))
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.ypBlack)
+                                        .imageScale(.large)
+                                }
+                                .padding()
+                            }
                         }
                     }
                 }

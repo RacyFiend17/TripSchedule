@@ -4,7 +4,8 @@ struct MainView: View {
     @State private var selectedCity: City?
     @State private var selectedStation: Station?
     
-    @State var viewModel = MainViewModel()
+    @State private var mainViewModel = MainViewModel()
+    @State private var carriersViewModel = CarriersViewModel()
     
     @State private var path: [String] = []
     
@@ -27,9 +28,9 @@ struct MainView: View {
                                 path.append("FromCity")
                             } label:
                             {
-                                Text(viewModel.fromStation?.name ?? "Откуда")
+                                Text(mainViewModel.fromStation?.name ?? "Откуда")
                                     .font(.system(size: 17, weight: .regular))
-                                    .foregroundStyle(viewModel.fromStation?.name != nil ? Color(.black) : Color(.ypGray))
+                                    .foregroundStyle(mainViewModel.fromStation?.name != nil ? Color(.black) : Color(.ypGray))
                                     .padding(.leading, 16)
                                     .padding(.trailing, 13)
                                     .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
@@ -41,51 +42,16 @@ struct MainView: View {
                                 path.append("ToCity")
                             } label:
                             {
-                                Text(viewModel.toStation?.name ?? "Куда")
+                                Text(mainViewModel.toStation?.name ?? "Куда")
                                     .font(.system(size: 17, weight: .regular))
-                                    .foregroundStyle(viewModel.toStation?.name != nil ? Color(.black) : Color(.ypGray))
+                                    .foregroundStyle(mainViewModel.toStation?.name != nil ? Color(.black) : Color(.ypGray))
                                     .padding(.leading, 16)
                                     .padding(.trailing, 13)
                                     .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                             .background(Color.white)
-                            .navigationDestination(for: String.self) { value in
-                                
-                                switch value {
-                                    
-                                case "FromCity":
-                                    SelectionView(title: "Выбор города",
-                                                  items: MockDataProvider.cities) { item in
-                                        viewModel.fromCity = item
-                                        path.append("FromStation")
-                                    }
-                                    
-                                case "FromStation":
-                                    SelectionView(title: "Выбор станции",
-                                                  items: viewModel.fromCity?.stations ?? []) { item in
-                                        viewModel.fromStation = item
-                                        path = []
-                                    }
-                                    
-                                case "ToCity":
-                                    SelectionView(title: "Выбор города",
-                                                  items: MockDataProvider.cities) { item in
-                                        viewModel.toCity = item
-                                        path.append("ToStation")
-                                    }
-                                    
-                                case "ToStation":
-                                    SelectionView(title: "Выбор станции",
-                                                  items: viewModel.toCity?.stations ?? []) { item in
-                                        viewModel.toStation = item
-                                        path = []
-                                    }
-                                    
-                                default:
-                                    EmptyView()
-                                }
-                            }
+                            
                         }
                         .frame(maxWidth: .infinity, maxHeight: 128)
                         .cornerRadius(20)
@@ -93,7 +59,7 @@ struct MainView: View {
                         
                         
                         Button() {
-                            viewModel.swapDirections()
+                            mainViewModel.swapDirections()
                         } label: {
                             Image("changeIcon")
                                 .resizable()
@@ -106,14 +72,14 @@ struct MainView: View {
                     .cornerRadius(20)
                     .padding(.horizontal, 16)
                     
-                    if viewModel.isSearchEnabled{
+                    if mainViewModel.isSearchEnabled{
                         Button() {
-                            print("Поиск маршрута")
+                            path.append("Search")
                         } label: {
                             Text("Найти")
                                 .font(.system(size: 17, weight: .bold))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .init(horizontal: .center, vertical: .center))
-                                
+                            
                         }
                         .frame(maxWidth: 150, maxHeight: 60)
                         .background(Color.ypBlue)
@@ -121,10 +87,68 @@ struct MainView: View {
                         .cornerRadius(14)
                     }
                 }
+                Spacer()
             }
-            Spacer()
+            .background(Color(.ypWhite))
+            .navigationDestination(for: String.self) { value in
+                
+                switch value {
+                    
+                case "FromCity":
+                    SelectionView(title: "Выбор города",
+                                  items: MockDataProvider.cities) { item in
+                        mainViewModel.fromCity = item
+                        path.append("FromStation")
+                    }
+                                  .toolbar(.hidden, for: .tabBar)
+                    
+                case "FromStation":
+                    SelectionView(title: "Выбор станции",
+                                  items: mainViewModel.fromCity?.stations ?? []) { item in
+                        mainViewModel.fromStation = item
+                        path = []
+                    }
+                                  .toolbar(.hidden, for: .tabBar)
+                    
+                case "ToCity":
+                    SelectionView(title: "Выбор города",
+                                  items: MockDataProvider.cities) { item in
+                        mainViewModel.toCity = item
+                        path.append("ToStation")
+                    }
+                                  .toolbar(.hidden, for: .tabBar)
+                    
+                case "ToStation":
+                    SelectionView(title: "Выбор станции",
+                                  items: mainViewModel.toCity?.stations ?? []) { item in
+                        mainViewModel.toStation = item
+                        path = []
+                    }
+                                  .toolbar(.hidden, for: .tabBar)
+                    
+                case "Search":
+                    if let fromCity = mainViewModel.fromCity,
+                       let fromStation = mainViewModel.fromStation,
+                       let toCity = mainViewModel.toCity,
+                       let toStation = mainViewModel.toStation
+                    {
+                        CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel) {
+                            path.append("Filters")
+                        }
+                        .toolbar(.hidden, for: .tabBar)
+                    }
+                    
+                case "Filters":
+                    FiltersView(viewModel: carriersViewModel)
+                        .toolbar(.hidden, for: .tabBar)
+                default:
+                    EmptyView()
+                }
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+    
 }
 
 #Preview {
