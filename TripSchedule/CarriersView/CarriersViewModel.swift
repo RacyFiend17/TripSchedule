@@ -25,7 +25,7 @@ import Observation
         case .noTransfer:
             return !route.isTransfer
         case .yesTransfer:
-            return route.isTransfer
+            return true
         }
     }
     

@@ -9,10 +9,7 @@ struct SelectionView<Item: SelectableItem>: View {
     @State private var searchText = ""
     
     var filteredItems: [Item] {
-        if searchText.isEmpty { return items }
-        return items.filter {
-            $0.name.localizedCaseInsensitiveContains(searchText)
-        }
+        searchText.isEmpty ? items : items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
     
     var body: some View {
@@ -42,14 +39,14 @@ struct SelectionView<Item: SelectableItem>: View {
             .padding(.horizontal, 16)
             
             if filteredItems.isEmpty {
-                            VStack {
-                                Spacer()
-                                Text(title == "Выбор города" ? "Город не найден" : "Станция не найдена")
-                                    .font(.system(size: 24, weight: .bold))
-                                    .foregroundColor(.ypBlack)
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                VStack {
+                    Spacer()
+                    Text(title == "Выбор города" ? "Город не найден" : "Станция не найдена")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.ypBlack)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     LazyVStack(spacing: 0) {

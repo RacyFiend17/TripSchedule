@@ -17,16 +17,19 @@ struct CarriersView: View {
                     .lineLimit(nil)
                     .padding(.vertical, 16)
                 
-                if viewModel.filteredRoutes.isEmpty {
-                                VStack {
-                                    Spacer()
-                                    Text("Вариантов нет")
-                                        .font(.system(size: 24, weight: .bold))
-                                        .foregroundColor(.ypBlack)
-                                    Spacer()
-                                }
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
+                ZStack {
+                    
+                    VStack {
+                        Spacer()
+                        Text("Вариантов нет")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(.ypBlack)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .opacity(viewModel.filteredRoutes.isEmpty ? 1 : 0)
+                    
+                    // Список маршрутов (прозрачен, когда нет маршрутов)
                     ScrollView {
                         LazyVStack(spacing: 8) {
                             ForEach(viewModel.filteredRoutes) { route in
@@ -34,6 +37,7 @@ struct CarriersView: View {
                             }
                         }
                     }
+                    .opacity(viewModel.filteredRoutes.isEmpty ? 0 : 1)
                 }
             }
             .padding(.horizontal, 16)
@@ -61,7 +65,7 @@ struct CarriersView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 60)
                     .background(Color.ypBlue)
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding([.top, .horizontal], 16)
                     .padding(.bottom, 24)
                 }

@@ -7,11 +7,11 @@ struct MainView: View {
     @State private var mainViewModel = MainViewModel()
     @State private var carriersViewModel = CarriersViewModel()
     
-    @State private var path: [String] = []
+    @State private var path: [Path] = []
     
     var body: some View {
         NavigationStack(path: $path) {
-            VStack (alignment: .center, spacing: 20){
+            VStack (spacing: 20){
                 ScrollView {
                     LazyHStack {
                         
@@ -25,7 +25,7 @@ struct MainView: View {
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
                             Button() {
-                                path.append("FromCity")
+                                path.append(Path.FromCity)
                             } label:
                             {
                                 Text(mainViewModel.fromStation?.name ?? "Откуда")
@@ -39,7 +39,7 @@ struct MainView: View {
                             .background(Color.white)
                             
                             Button() {
-                                path.append("ToCity")
+                                path.append(Path.ToCity)
                             } label:
                             {
                                 Text(mainViewModel.toStation?.name ?? "Куда")
@@ -61,7 +61,7 @@ struct MainView: View {
                         Button() {
                             mainViewModel.swapDirections()
                         } label: {
-                            Image("changeIcon")
+                            Image(.changeIcon)
                                 .resizable()
                                 .frame(width: 36, height: 36)
                                 .padding(.horizontal, 16)
@@ -74,7 +74,7 @@ struct MainView: View {
                     
                     if mainViewModel.isSearchEnabled{
                         Button() {
-                            path.append("Search")
+                            path.append(Path.Search)
                         } label: {
                             Text("Найти")
                                 .font(.system(size: 17, weight: .bold))
@@ -90,19 +90,19 @@ struct MainView: View {
                 Spacer()
             }
             .background(Color(.ypWhite))
-            .navigationDestination(for: String.self) { value in
+            .navigationDestination(for: Path.self) { value in
                 
                 switch value {
                     
-                case "FromCity":
+                case Path.FromCity:
                     SelectionView(title: "Выбор города",
                                   items: MockDataProvider.cities) { item in
                         mainViewModel.fromCity = item
-                        path.append("FromStation")
+                        path.append(Path.FromStation)
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case "FromStation":
+                case Path.FromStation:
                     SelectionView(title: "Выбор станции",
                                   items: mainViewModel.fromCity?.stations ?? []) { item in
                         mainViewModel.fromStation = item
@@ -110,15 +110,15 @@ struct MainView: View {
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case "ToCity":
+                case Path.ToCity:
                     SelectionView(title: "Выбор города",
                                   items: MockDataProvider.cities) { item in
                         mainViewModel.toCity = item
-                        path.append("ToStation")
+                        path.append(Path.ToStation)
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case "ToStation":
+                case Path.ToStation:
                     SelectionView(title: "Выбор станции",
                                   items: mainViewModel.toCity?.stations ?? []) { item in
                         mainViewModel.toStation = item
@@ -126,29 +126,26 @@ struct MainView: View {
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case "Search":
+                case Path.Search:
                     if let fromCity = mainViewModel.fromCity,
                        let fromStation = mainViewModel.fromStation,
                        let toCity = mainViewModel.toCity,
                        let toStation = mainViewModel.toStation
                     {
                         CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel) {
-                            path.append("Filters")
+                            path.append(Path.Filters)
                         }
                         .toolbar(.hidden, for: .tabBar)
                     }
                     
-                case "Filters":
+                case Path.Filters:
                     FiltersView(viewModel: carriersViewModel)
                         .toolbar(.hidden, for: .tabBar)
-                default:
-                    EmptyView()
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
 }
 
 #Preview {
