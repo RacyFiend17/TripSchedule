@@ -4,7 +4,7 @@ import SwiftUI
 struct TripScheduleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabBarView()
         }
         
     }
