@@ -15,27 +15,34 @@ struct StoriesView: View {
             self.progressPerTick = 1.0 / CGFloat(storiesCount) / secondsPerStory * timerTickInternal
         }
     }
-
-    private let stories: [Story]
+    
+    private let storiesPack: StoryPack
     private let configuration: Configuration
-    private var currentStory: Story { stories[currentStoryIndex] }
-    private var currentStoryIndex: Int { Int(progress * CGFloat(stories.count)) }
+    private var currentStory: Story { storiesPack.stories[currentStoryIndex] }
+    private var currentStoryIndex: Int { Int(progress * CGFloat(storiesPack.stories.count)) }
     @State private var progress: CGFloat = 0
     @State private var timer: Timer.TimerPublisher
     @State private var cancellable: Cancellable?
+    @Environment(\.dismiss) private var dismiss
+    @Environment(StoriesManager.self) var storiesManager
 
-    init(stories: [Story] = MockDataProvider.storiesPacks[0].stories) {
-        self.stories = stories
-        configuration = Configuration(storiesCount: stories.count)
+    init(storiesPack: StoryPack) {
+        self.storiesPack = storiesPack
+        configuration = Configuration(storiesCount: storiesPack.stories.count)
         timer = Self.createTimer(configuration: configuration)
     }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             StoryView(story: currentStory)
-            ProgressBar(numberOfSections: stories.count, progress: progress)
+            ProgressBar(numberOfSections: storiesPack.stories.count, progress: progress)
                 .padding(.init(top: 28, leading: 12, bottom: 12, trailing: 12))
-            CloseButton(action: { print("Close Story") })
+            CloseButton(action: {
+                if currentStoryIndex == storiesPack.stories.count - 1 {
+                    storiesManager.markAsWatched(packNumber: storiesPack.storyPackNumber)
+                }
+                dismiss()
+            })
                 .padding(.top, 57)
                 .padding(.trailing, 12)
         }
@@ -64,7 +71,7 @@ struct StoriesView: View {
     }
 
     private func nextStory() {
-        let storiesCount = stories.count
+        let storiesCount = storiesPack.stories.count
         let currentStoryIndex = Int(progress * CGFloat(storiesCount))
         let nextStoryIndex = currentStoryIndex + 1 < storiesCount ? currentStoryIndex + 1 : 0
         withAnimation {
@@ -83,6 +90,6 @@ struct StoriesView: View {
     }
 }
 
-#Preview {
-    StoriesView()
-}
+//#Preview {
+//    StoriesView()
+//}

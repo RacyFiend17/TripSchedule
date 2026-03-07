@@ -84,7 +84,7 @@ final class MockDataProvider {
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_1"
+                    imageName: "story_1",
                 ),
                 
                 Story(
@@ -93,14 +93,16 @@ final class MockDataProvider {
                     imageName: "story_2"
                 )
             ],
-            previewImageName: "story_1_preview"),
+            previewImageName: "storyPack_1_preview",
+            storyPackNumber: 1
+        ),
         
         StoryPack(
             stories: [
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_3"
+                    imageName: "story_3",
                 ),
                 
                 Story(
@@ -109,14 +111,16 @@ final class MockDataProvider {
                     imageName: "story_4"
                 )
             ],
-            previewImageName: "story_3_preview"),
+            previewImageName: "storyPack_2_preview",
+            storyPackNumber: 2
+        ),
         
         StoryPack(
             stories: [
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_5"
+                    imageName: "story_5",
                 ),
                 
                 Story(
@@ -125,14 +129,16 @@ final class MockDataProvider {
                     imageName: "story_6"
                 )
             ],
-            previewImageName: "story_5_preview"),
+            previewImageName: "storyPack_3_preview",
+            storyPackNumber: 3
+        ),
             
         StoryPack(
             stories: [
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_7"
+                    imageName: "story_7",
                 ),
                 
                 Story(
@@ -141,14 +147,16 @@ final class MockDataProvider {
                     imageName: "story_8"
                 )
             ],
-            previewImageName: "story_7_preview"),
+            previewImageName: "storyPack_4_preview",
+            storyPackNumber: 4
+        ),
         
         StoryPack(
             stories: [
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_9"
+                    imageName: "story_9",
                 ),
                 
                 Story(
@@ -157,14 +165,16 @@ final class MockDataProvider {
                     imageName: "story_10"
                 )
             ],
-            previewImageName: "story_5_preview"),
+            previewImageName: "storyPack_5_preview",
+            storyPackNumber: 5
+        ),
             
         StoryPack(
             stories: [
                 Story(
                     title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
                     description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
-                    imageName: "story_11"
+                    imageName: "story_11",
                 ),
                 
                 Story(
@@ -173,6 +183,62 @@ final class MockDataProvider {
                     imageName: "story_12"
                 )
             ],
-            previewImageName: "story_7_preview"),
+            previewImageName: "storyPack_6_preview",
+            storyPackNumber: 6
+        ),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_13",
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_14"
+                )
+            ],
+            previewImageName: "storyPack_7_preview",
+            storyPackNumber: 7
+        ),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_15",
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_16"
+                )
+            ],
+            previewImageName: "storyPack_8_preview",
+            storyPackNumber: 8
+        ),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_17",
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_18"
+                )
+            ],
+            previewImageName: "storyPack_9_preview",
+            storyPackNumber: 9
+        ),
     ]
 }

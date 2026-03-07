@@ -8,18 +8,21 @@ struct MainView: View {
     @State private var carriersViewModel = CarriersViewModel()
     
     @State private var path: [Path] = []
-//    @State private var storiesManager = StoriesManager()
     
     var body: some View {
         NavigationStack(path: $path) {
             VStack (spacing: 20) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack (spacing: 12) {
-                        ForEach(MockDataProvider.storiesPacks, id: \.self){ storyPack in
-                            Button {
-                                
+                        ForEach(MockDataProvider.storiesPacks){ storyPack in
+                            NavigationLink {
+                                StoriesView(storiesPack: storyPack)
+                                    .toolbar(.hidden, for: .tabBar)
+                                    .navigationBarBackButtonHidden(true)
+                                    .navigationTitle("")
+                                    .toolbarRole(.editor)
                             } label: {
-                                StoryPreview(story: storyPack.stories[0])
+                                StoryPreview(storyPack: storyPack)
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
