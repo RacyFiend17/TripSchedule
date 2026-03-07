@@ -7,11 +7,11 @@ struct RouteCard: View {
     var body: some View {
         VStack{
             HStack(alignment: .top, spacing: 0) {
-                Image(route.carrierLogoName)
+                Image(route.carrier.logoName)
                     .resizable()
                     .frame(width: 38, height: 38)
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(route.carrierName)
+                    Text(route.carrier.name)
                         .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(.black)
                     

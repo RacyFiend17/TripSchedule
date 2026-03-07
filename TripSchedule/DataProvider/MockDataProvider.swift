@@ -29,10 +29,15 @@ final class MockDataProvider {
         )
     ]
     
+    static let carriers: [CarrierData] = [
+        CarrierData(name: "ОАО «РЖД»", logoName: "rzdLogo", imageName: "rzdImage", email: "i.lozgkina@yandex.ru", phoneNumber: "+7 (904) 329-27-71"),
+        CarrierData(name: "ФГК", logoName: "fgkLogo", imageName: "fgkLogo", email: "fgk@yandex.ru", phoneNumber: "+7 (900) 000-00-00"),
+        CarrierData(name: "Урал логистика", logoName: "uralLogistikaLogo", imageName: "uralLogistikaLogo", email: "urallogistics@yandex.ru", phoneNumber: "+7 (900) 000-00-01")
+    ]
+    
     static let routes: [Route] = [
         Route(
-            carrierName: "РЖД",
-            carrierLogoName: "rzdLogo",
+            carrier: carriers[0],
             isTransfer: true,
             departureTime: "22:30",
             arrivalTime: "08:15",
@@ -40,8 +45,7 @@ final class MockDataProvider {
             day: "14 января"
         ),
         Route(
-            carrierName: "ФГК",
-            carrierLogoName: "fgkLogo",
+            carrier: carriers[1],
             isTransfer: false,
             departureTime: "01:15",
             arrivalTime: "09:00",
@@ -49,8 +53,7 @@ final class MockDataProvider {
             day: "15 января"
         ),
         Route(
-            carrierName: "Урал логистика",
-            carrierLogoName: "uralLogistikaLogo",
+            carrier: carriers[2],
             isTransfer: false,
             departureTime: "12:30",
             arrivalTime: "21:00",
@@ -58,8 +61,7 @@ final class MockDataProvider {
             day: "16 января"
         ),
         Route(
-            carrierName: "РЖД",
-            carrierLogoName: "rzdLogo",
+            carrier: carriers[0],
             isTransfer: true,
             departureTime: "22:30",
             arrivalTime: "08:15",
@@ -67,13 +69,110 @@ final class MockDataProvider {
             day: "17 января"
         ),
         Route(
-            carrierName: "РЖД",
-            carrierLogoName: "rzdLogo",
+            carrier: carriers[0],
             isTransfer: false,
             departureTime: "10:30",
             arrivalTime: "14:30",
             duration: "4 часа",
             day: "18 января"
         )
+    ]
+    
+    static let storiesPacks: [StoryPack] = [
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_1"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_2"
+                )
+            ],
+            previewImageName: "story_1_preview"),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_3"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_4"
+                )
+            ],
+            previewImageName: "story_3_preview"),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_5"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_6"
+                )
+            ],
+            previewImageName: "story_5_preview"),
+            
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_7"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_8"
+                )
+            ],
+            previewImageName: "story_7_preview"),
+        
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_9"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_10"
+                )
+            ],
+            previewImageName: "story_5_preview"),
+            
+        StoryPack(
+            stories: [
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_11"
+                ),
+                
+                Story(
+                    title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text",
+                    imageName: "story_12"
+                )
+            ],
+            previewImageName: "story_7_preview"),
     ]
 }

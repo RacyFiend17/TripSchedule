@@ -5,7 +5,8 @@ struct CarriersView: View {
     
     @State var viewModel: CarriersViewModel
     
-    let onSelect: () -> Void
+    let onCarrierCardSelect: () -> Void
+    let onFilterSelect: () -> Void
     
     var body: some View {
         ZStack {
@@ -33,7 +34,14 @@ struct CarriersView: View {
                     ScrollView {
                         LazyVStack(spacing: 8) {
                             ForEach(viewModel.filteredRoutes) { route in
-                                RouteCard(route: route)
+                                Button {
+                                    viewModel.selectedRoute = route
+                                    onCarrierCardSelect()
+                                    print("робит")
+                                } label: {
+                                    RouteCard(route: route)
+                                        .frame(maxWidth: .infinity)
+                                }
                             }
                         }
                     }
@@ -49,7 +57,7 @@ struct CarriersView: View {
             VStack(spacing: 0) {
                 Spacer()
                 Button {
-                    onSelect()
+                    onFilterSelect()
                 } label: {
                     HStack(spacing: 4) {
                         Text("Уточнить время")

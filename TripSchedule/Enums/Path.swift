@@ -5,4 +5,6 @@ enum Path: String {
     case ToStation
     case Filters
     case Search
+    case CarrierInfo
+    case UserAgreement
 }

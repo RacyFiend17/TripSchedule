@@ -4,6 +4,7 @@ import Observation
     
     var selectedTimes: Set<TimeFilter> = []
     var transferFilter: TransferFilter?
+    var selectedRoute: Route?
     
     private var routes: [Route] = MockDataProvider.routes
     

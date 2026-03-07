@@ -8,18 +8,27 @@ struct MainView: View {
     @State private var carriersViewModel = CarriersViewModel()
     
     @State private var path: [Path] = []
+//    @State private var storiesManager = StoriesManager()
     
     var body: some View {
         NavigationStack(path: $path) {
-            VStack (spacing: 20){
-                ScrollView {
-                    LazyHStack {
-                        
+            VStack (spacing: 20) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack (spacing: 12) {
+                        ForEach(MockDataProvider.storiesPacks, id: \.self){ storyPack in
+                            Button {
+                                
+                            } label: {
+                                StoryPreview(story: storyPack.stories[0])
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
                     }
+                    .padding([.bottom, .top], 24)
+                    .padding(.leading, 16)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding([.bottom, .top], 24)
-                .padding(.leading, 16)
-                .frame(maxWidth: .infinity, maxHeight: 188, alignment: .init(horizontal: .center, vertical: .top))
+                .frame(maxWidth: .infinity, maxHeight: 188)
                 
                 VStack(spacing: 16) {
                     HStack(spacing: 0) {
@@ -132,7 +141,10 @@ struct MainView: View {
                        let toCity = mainViewModel.toCity,
                        let toStation = mainViewModel.toStation
                     {
-                        CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel) {
+                        CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel,
+                                     onCarrierCardSelect: {
+                            path.append(Path.CarrierInfo)
+                        }) {
                             path.append(Path.Filters)
                         }
                         .toolbar(.hidden, for: .tabBar)
@@ -140,6 +152,13 @@ struct MainView: View {
                     
                 case Path.Filters:
                     FiltersView(viewModel: carriersViewModel)
+                        .toolbar(.hidden, for: .tabBar)
+                    
+                case Path.CarrierInfo:
+                    CarrierInfo(viewModel: carriersViewModel)
+                        .toolbar(.hidden, for: .tabBar)
+                case Path.UserAgreement:
+                    UserAgreementView()
                         .toolbar(.hidden, for: .tabBar)
                 }
             }
