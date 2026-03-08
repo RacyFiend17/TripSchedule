@@ -1,6 +1,6 @@
 import Foundation
 
-struct CarrierData: Equatable, Hashable, Identifiable {
+struct CarrierData: Hashable, Identifiable {
     var id = UUID()
     
     let name: String

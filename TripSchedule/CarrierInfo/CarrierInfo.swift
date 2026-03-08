@@ -1,10 +1,14 @@
 import SwiftUI
 
 struct CarrierInfo: View {
-    @State var viewModel: CarriersViewModel
+    @State private var viewModel: CarriersViewModel
+    
+    init(viewModel: CarriersViewModel) {
+            _viewModel = State(initialValue: viewModel)
+        }
+
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 16) {
             Image(viewModel.selectedRoute?.carrier.imageName ?? "icon_name")
                 .resizable()
@@ -46,11 +50,5 @@ struct CarrierInfo: View {
         .navigationTitle("Информация о перевозчике")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarRole(.editor)
-        
     }
-}
-
-#Preview {
-    let carrierViewModel = CarriersViewModel()
-    CarrierInfo(viewModel: carrierViewModel)
 }

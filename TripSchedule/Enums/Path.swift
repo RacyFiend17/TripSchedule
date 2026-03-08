@@ -1,10 +1,10 @@
 enum Path: String {
-    case FromCity
-    case ToCity
-    case FromStation
-    case ToStation
-    case Filters
-    case Search
-    case CarrierInfo
-    case UserAgreement
+    case fromCity
+    case toCity
+    case fromStation
+    case toStation
+    case filters
+    case search
+    case carrierInfo
+    case userAgreement
 }

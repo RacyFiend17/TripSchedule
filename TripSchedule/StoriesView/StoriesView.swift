@@ -67,7 +67,7 @@ struct StoriesView: View {
                     
                     Color.clear
                         .frame(width: geometry.size.width * 0.6)
-
+                    
                     Color.clear
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -137,5 +137,5 @@ struct StoriesView: View {
     private static func createTimer(configuration: Configuration) -> Timer.TimerPublisher {
         Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
     }
-        
+    
 }

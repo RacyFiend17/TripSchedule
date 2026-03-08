@@ -23,11 +23,11 @@ struct StoryPreview: View {
         .frame(width: 92, height: 140)
         .background(Color.storiesBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
-        .opacity(storiesManager.isWatched(packNumber: storyPack.storyPackNumber) ? 1: 0.5)
+        .opacity(storiesManager.isWatched(packNumber: storyPack.storyPackNumber) ? 0.5 : 1)
         .overlay(storiesManager.isWatched(packNumber: storyPack.storyPackNumber) ?
-                 RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.ypBlue, lineWidth: 4) :
-                    nil
+                 nil :
+                    RoundedRectangle(cornerRadius: 16)
+            .stroke(Color.ypBlue, lineWidth: 4)
         )
     }
 }

@@ -9,14 +9,16 @@ struct UserAgreementView: View {
             Color(.ypWhite)
                 .ignoresSafeArea()
             
-            WebView(url: URL(string: "https://yandex.ru/legal/practicum_offer/ru/")!)
-                .ignoresSafeArea(edges: [.leading, .bottom, .trailing])
-                .overlay {
-                    if isLoading {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
+            if let url = URL(string: "https://yandex.ru/legal/practicum_offer/ru/") {
+                WebView(url: url)
+                    .ignoresSafeArea(edges: [.horizontal, .bottom])
+                    .overlay {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        }
                     }
-                }
+            }
         }
         .navigationTitle("Пользовательское соглашение")
         .navigationBarTitleDisplayMode(.inline)

@@ -12,7 +12,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack (spacing: 20) {
-                ScrollView(.horizontal, showsIndicators: false) {
+                ScrollView(.horizontal) {
                     LazyHStack (spacing: 12) {
                         ForEach(MockDataProvider.storiesPacks){ storyPack in
                             NavigationLink {
@@ -31,13 +31,14 @@ struct MainView: View {
                     .padding(.leading, 16)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .scrollIndicators(.hidden)
                 .frame(maxWidth: .infinity, maxHeight: 188)
                 
                 VStack(spacing: 16) {
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            Button() {
-                                path.append(Path.FromCity)
+                            Button {
+                                path.append(Path.fromCity)
                             } label:
                             {
                                 Text(mainViewModel.fromStation?.name ?? "Откуда")
@@ -51,7 +52,7 @@ struct MainView: View {
                             .background(Color.white)
                             
                             Button() {
-                                path.append(Path.ToCity)
+                                path.append(Path.toCity)
                             } label:
                             {
                                 Text(mainViewModel.toStation?.name ?? "Куда")
@@ -86,7 +87,7 @@ struct MainView: View {
                     
                     if mainViewModel.isSearchEnabled{
                         Button() {
-                            path.append(Path.Search)
+                            path.append(Path.search)
                         } label: {
                             Text("Найти")
                                 .font(.system(size: 17, weight: .bold))
@@ -106,15 +107,15 @@ struct MainView: View {
                 
                 switch value {
                     
-                case Path.FromCity:
+                case Path.fromCity:
                     SelectionView(title: "Выбор города",
                                   items: MockDataProvider.cities) { item in
                         mainViewModel.fromCity = item
-                        path.append(Path.FromStation)
+                        path.append(Path.fromStation)
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case Path.FromStation:
+                case Path.fromStation:
                     SelectionView(title: "Выбор станции",
                                   items: mainViewModel.fromCity?.stations ?? []) { item in
                         mainViewModel.fromStation = item
@@ -122,15 +123,15 @@ struct MainView: View {
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case Path.ToCity:
+                case Path.toCity:
                     SelectionView(title: "Выбор города",
                                   items: MockDataProvider.cities) { item in
                         mainViewModel.toCity = item
-                        path.append(Path.ToStation)
+                        path.append(Path.toStation)
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case Path.ToStation:
+                case Path.toStation:
                     SelectionView(title: "Выбор станции",
                                   items: mainViewModel.toCity?.stations ?? []) { item in
                         mainViewModel.toStation = item
@@ -138,7 +139,7 @@ struct MainView: View {
                     }
                                   .toolbar(.hidden, for: .tabBar)
                     
-                case Path.Search:
+                case Path.search:
                     if let fromCity = mainViewModel.fromCity,
                        let fromStation = mainViewModel.fromStation,
                        let toCity = mainViewModel.toCity,
@@ -146,21 +147,21 @@ struct MainView: View {
                     {
                         CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel,
                                      onCarrierCardSelect: {
-                            path.append(Path.CarrierInfo)
+                            path.append(Path.carrierInfo)
                         }) {
-                            path.append(Path.Filters)
+                            path.append(Path.filters)
                         }
                         .toolbar(.hidden, for: .tabBar)
                     }
                     
-                case Path.Filters:
+                case Path.filters:
                     FiltersView(viewModel: carriersViewModel)
                         .toolbar(.hidden, for: .tabBar)
                     
-                case Path.CarrierInfo:
+                case Path.carrierInfo:
                     CarrierInfo(viewModel: carriersViewModel)
                         .toolbar(.hidden, for: .tabBar)
-                case Path.UserAgreement:
+                case Path.userAgreement:
                     UserAgreementView()
                         .toolbar(.hidden, for: .tabBar)
                 }

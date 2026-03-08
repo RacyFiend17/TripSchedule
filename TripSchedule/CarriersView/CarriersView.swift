@@ -3,10 +3,22 @@ import SwiftUI
 struct CarriersView: View {
     let title: String
     
-    @State var viewModel: CarriersViewModel
+    @State private var viewModel: CarriersViewModel
     
     let onCarrierCardSelect: () -> Void
     let onFilterSelect: () -> Void
+    
+    init(
+        title: String,
+        viewModel: CarriersViewModel,
+        onCarrierCardSelect: @escaping () -> Void,
+        onFilterSelect: @escaping () -> Void
+    ) {
+        self.title = title
+        self.onCarrierCardSelect = onCarrierCardSelect
+        self.onFilterSelect = onFilterSelect
+        _viewModel = State(initialValue: viewModel)
+    }
     
     var body: some View {
         ZStack {
@@ -28,16 +40,14 @@ struct CarriersView: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .opacity(viewModel.filteredRoutes.isEmpty ? 1 : 0)
+                    .hiddenWhen(!viewModel.filteredRoutes.isEmpty)
                     
-                    // Список маршрутов (прозрачен, когда нет маршрутов)
                     ScrollView {
                         LazyVStack(spacing: 8) {
                             ForEach(viewModel.filteredRoutes) { route in
                                 Button {
                                     viewModel.selectedRoute = route
                                     onCarrierCardSelect()
-                                    print("робит")
                                 } label: {
                                     RouteCard(route: route)
                                         .frame(maxWidth: .infinity)
@@ -45,7 +55,7 @@ struct CarriersView: View {
                             }
                         }
                     }
-                    .opacity(viewModel.filteredRoutes.isEmpty ? 0 : 1)
+                    .hiddenWhen(viewModel.filteredRoutes.isEmpty)
                 }
             }
             .padding(.horizontal, 16)

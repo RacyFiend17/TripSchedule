@@ -8,7 +8,7 @@ struct StoryView: View {
             Image(story.imageName)
                 .resizable()
                 .scaledToFill()
-                .cornerRadius(40)
+                .clipShape(RoundedRectangle(cornerRadius: 40))
             
             VStack {
                 Spacer()
@@ -16,11 +16,11 @@ struct StoryView: View {
                     Text(story.title)
                         .font(.system(size: 34, weight: .bold))
                         .lineLimit(2)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                     Text(story.description)
                         .font(.system(size: 20, weight: .regular))
                         .lineLimit(3)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                 }
             }
             .padding(.init(top: 0, leading: 16, bottom: 40, trailing: 16))

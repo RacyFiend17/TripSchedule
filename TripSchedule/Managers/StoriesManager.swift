@@ -16,7 +16,6 @@ import Foundation
     }
     
     private func saveToUserDefaults() {
-        // Set автоматически конвертируется в Array при сохранении
         UserDefaults.standard.set(Array(watchedStoriePackNumbers), forKey: "watchedStoriePackNumbers")
     }
     
