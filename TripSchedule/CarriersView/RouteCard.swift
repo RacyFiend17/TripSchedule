@@ -1,4 +1,5 @@
 import SwiftUI
+import Kingfisher
 
 struct RouteCard: View {
     
@@ -7,7 +8,11 @@ struct RouteCard: View {
     var body: some View {
         VStack{
             HStack(alignment: .top, spacing: 0) {
-                Image(route.carrier.logoName)
+                KFImage(URL(string: route.carrier.logoURL ?? ""))
+                    .placeholder {
+                        ProgressView() 
+                            .frame(width: 38, height: 38)
+                    }
                     .resizable()
                     .frame(width: 38, height: 38)
                 VStack(alignment: .leading, spacing: 0) {
@@ -59,6 +64,3 @@ struct RouteCard: View {
     }
 }
 
-#Preview {
-    RouteCard(route: MockDataProvider.routes[1])
-}

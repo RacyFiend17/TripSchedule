@@ -104,6 +104,3 @@ struct FiltersView: View {
     }
 }
 
-#Preview {
-    FiltersView(viewModel: CarriersViewModel())
-}

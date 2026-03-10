@@ -7,4 +7,5 @@ enum Path: String {
     case search
     case carrierInfo
     case userAgreement
+    case serverError
 }

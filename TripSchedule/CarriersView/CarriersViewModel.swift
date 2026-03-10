@@ -1,17 +1,25 @@
 import Observation
 
-@Observable final class CarriersViewModel {
-    
+@Observable
+@MainActor
+final class CarriersViewModel {
+
     var selectedTimes: Set<TimeFilter> = []
     var transferFilter: TransferFilter?
     var selectedRoute: Route?
-    
-    private var routes: [Route] = MockDataProvider.routes
-    
+    let fromStation: Station
+    let toStation: Station
+
+    private(set) var routes: [Route] = []
+
+    var isLoading = false
+    var error: Error?
+    var onError: (() -> Void)
+
     var hasActiveFilter: Bool {
         !selectedTimes.isEmpty || transferFilter != nil
     }
-    
+
     var filteredRoutes: [Route] {
         routes.filter { route in
             matchesTransfer(route) &&
@@ -19,6 +27,33 @@ import Observation
         }
     }
     
+    init(from: Station, to: Station, onError: @escaping () -> Void) {
+        self.fromStation = from
+        self.toStation = to
+        self.onError = onError
+    }
+
+    func loadRoutes(from stationFrom: Station, to stationTo: Station) async {
+        isLoading = true
+        error = nil
+
+        do {
+            let response = try await NetworkClientProvider.shared.fetchSchedule(
+                from: stationFrom.id,
+                to: stationTo.id
+            )
+
+            let segments = response.segments ?? []
+
+            routes = segments.map { Route(segment: $0) }
+
+        } catch {
+            self.error = error
+            onError()
+        }
+
+        isLoading = false
+    }
     
     private func matchesTransfer(_ route: Route) -> Bool {
         guard let transferFilter else { return true }
@@ -51,5 +86,5 @@ import Observation
             }
         }
     }
+    
 }
-

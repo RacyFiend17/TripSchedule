@@ -9,7 +9,7 @@ struct StoriesView: View {
         
         init(
             storiesCount: Int,
-            secondsPerStory: TimeInterval = 5,
+            secondsPerStory: TimeInterval = 10,
             timerTickInternal: TimeInterval = 0.05
         ) {
             self.timerTickInternal = timerTickInternal

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ErrorView: View {
-    let errorType: AppErrorType
+    @State var viewModel: ErrorViewModel
     
     var body: some View {
         ZStack {
@@ -9,19 +9,17 @@ struct ErrorView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 16) {
-                Image(errorType.imageName)
+                Image(viewModel.imageName)
                     .frame(width: 223, height: 223)
                 
-                Text(errorType.title)
+                Text(viewModel.title)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundStyle(Color.ypBlack)
             }
         }
     }
-    
-    
 }
 
 #Preview {
-    ErrorView(errorType: AppErrorType.noInternet)
+    ErrorView(viewModel: ErrorViewModel(errorType: .noInternet))
 }

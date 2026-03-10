@@ -1,4 +1,5 @@
 import SwiftUI
+import OpenAPIURLSession
 
 @main
 struct TripScheduleApp: App {
@@ -14,3 +15,4 @@ struct TripScheduleApp: App {
         }
     }
 }
+

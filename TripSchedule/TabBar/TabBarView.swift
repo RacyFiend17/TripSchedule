@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct TabBarView: View {
-    @State private var selectedTab = 0
+    @State private var tabBarViewModel = TabBarViewModel()
     
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $tabBarViewModel.selectedTab) {
             MainView()
             .tabItem {
                Image("scheduleTabBarItem")

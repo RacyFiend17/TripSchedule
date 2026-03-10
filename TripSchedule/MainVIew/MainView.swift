@@ -3,9 +3,8 @@ import SwiftUI
 struct MainView: View {
     @State private var selectedCity: City?
     @State private var selectedStation: Station?
-    
     @State private var mainViewModel = MainViewModel()
-    @State private var carriersViewModel = CarriersViewModel()
+    @State private var carriersViewModel: CarriersViewModel?
     
     @State private var path: [Path] = []
     
@@ -86,7 +85,15 @@ struct MainView: View {
                     .padding(.horizontal, 16)
                     
                     if mainViewModel.isSearchEnabled{
-                        Button() {
+                        Button {
+                            guard
+                                let fromStation = mainViewModel.fromStation,
+                                let toStation = mainViewModel.toStation else {
+                                return
+                            }
+                            carriersViewModel = CarriersViewModel(from: fromStation, to: toStation) {
+                                path.append(Path.serverError)
+                            }
                             path.append(Path.search)
                         } label: {
                             Text("Найти")
@@ -108,69 +115,137 @@ struct MainView: View {
                 switch value {
                     
                 case Path.fromCity:
-                    SelectionView(title: "Выбор города",
-                                  items: MockDataProvider.cities) { item in
-                        mainViewModel.fromCity = item
-                        path.append(Path.fromStation)
-                    }
-                                  .toolbar(.hidden, for: .tabBar)
+                    SelectionView(
+                        title: "Выбор города",
+                        viewModel: SelectionViewModel(fetchItems: {
+                            try await mainViewModel.getAllCities()
+                        }, onServerError: {
+                            path.removeAll()
+                            path.append(Path.serverError)
+                        }
+                                                     ),
+                        onSelect: { city in
+                            mainViewModel.fromCity = city
+                            path.append(Path.fromStation)
+                        }
+                    )
+                    .toolbar(.hidden, for: .tabBar)
                     
                 case Path.fromStation:
-                    SelectionView(title: "Выбор станции",
-                                  items: mainViewModel.fromCity?.stations ?? []) { item in
-                        mainViewModel.fromStation = item
-                        path = []
+                    if let fromCity = mainViewModel.fromCity {
+                        SelectionView(
+                            title: "Выбор станции",
+                            viewModel: SelectionViewModel(fetchItems: {
+                                fromCity.stations
+                            }, onServerError: {
+                                path.removeAll()
+                                path.append(Path.serverError)
+                            }
+                                                         ),
+                            onSelect: { station in
+                                mainViewModel.fromStation = station
+                                
+                                if let toStation = mainViewModel.toStation {
+                                    carriersViewModel = CarriersViewModel(from: station, to: toStation){
+                                        path.append(Path.serverError)
+                                    }
+                                }
+                                
+                                path = []
+                            }
+                        )
+                        .toolbar(.hidden, for: .tabBar)
                     }
-                                  .toolbar(.hidden, for: .tabBar)
                     
                 case Path.toCity:
-                    SelectionView(title: "Выбор города",
-                                  items: MockDataProvider.cities) { item in
-                        mainViewModel.toCity = item
-                        path.append(Path.toStation)
-                    }
-                                  .toolbar(.hidden, for: .tabBar)
+                    SelectionView(
+                        title: "Выбор города",
+                        viewModel: SelectionViewModel(fetchItems: {
+                            try await mainViewModel.getAllCities()
+                        }, onServerError: {
+                            path.removeAll()
+                            path.append(Path.serverError)
+                        }
+                                                     ),
+                        onSelect: { city in
+                            mainViewModel.toCity = city
+                            path.append(Path.toStation)
+                        }
+                    )
+                    .toolbar(.hidden, for: .tabBar)
                     
                 case Path.toStation:
-                    SelectionView(title: "Выбор станции",
-                                  items: mainViewModel.toCity?.stations ?? []) { item in
-                        mainViewModel.toStation = item
-                        path = []
+                    if let toCity = mainViewModel.toCity {
+                        SelectionView(
+                            title: "Выбор станции",
+                            viewModel: SelectionViewModel(fetchItems: {
+                                toCity.stations
+                            }, onServerError: {
+                                path.removeAll()
+                                path.append(Path.serverError)
+                            }
+                                                         ),
+                            onSelect: { station in
+                                mainViewModel.toStation = station
+                                
+                                if let fromStation = mainViewModel.fromStation {
+                                    carriersViewModel = CarriersViewModel(from: fromStation, to: station){
+                                        path.append(Path.serverError)
+                                    }
+                                }
+                                
+                                path = []
+                            }
+                        )
+                        .toolbar(.hidden, for: .tabBar)
                     }
-                                  .toolbar(.hidden, for: .tabBar)
                     
                 case Path.search:
-                    if let fromCity = mainViewModel.fromCity,
+                    if let carriersViewModel = carriersViewModel,
                        let fromStation = mainViewModel.fromStation,
-                       let toCity = mainViewModel.toCity,
                        let toStation = mainViewModel.toStation
                     {
-                        CarriersView(title: "\(fromCity.name)" + " " + "(\(fromStation.name))" + " " + "→" + " " + "\(toCity.name)" + " " + "(\(toStation.name))", viewModel: carriersViewModel,
-                                     onCarrierCardSelect: {
-                            path.append(Path.carrierInfo)
-                        }) {
-                            path.append(Path.filters)
-                        }
+                        CarriersView(
+                            title: "\(fromStation.name) → \(toStation.name)",
+                            viewModel: carriersViewModel,
+                            onCarrierCardSelect: { path.append(Path.carrierInfo) },
+                            onFilterSelect: { path.append(Path.filters) }
+                        )
                         .toolbar(.hidden, for: .tabBar)
+                        .task {
+                            await carriersViewModel.loadRoutes(from: fromStation, to: toStation)
+                        }
+                    } else {
+                        Text("Выберите станции для поиска")
+                            .foregroundColor(.gray)
                     }
                     
                 case Path.filters:
-                    FiltersView(viewModel: carriersViewModel)
-                        .toolbar(.hidden, for: .tabBar)
+                    if let carriersViewModel = carriersViewModel {
+                        FiltersView(viewModel: carriersViewModel)
+                    } else {
+                        Text("Фильтры недоступны")
+                    }
                     
                 case Path.carrierInfo:
-                    CarrierInfo(viewModel: carriersViewModel)
-                        .toolbar(.hidden, for: .tabBar)
+                    if let carriersViewModel = carriersViewModel {
+                        CarrierInfo(viewModel: carriersViewModel)
+                    } else {
+                        Text("Информация о перевозчике недоступна")
+                    }
                 case Path.userAgreement:
                     UserAgreementView()
                         .toolbar(.hidden, for: .tabBar)
+                    
+                case Path.serverError:
+                    
+                    let errorViewModel = ErrorViewModel(errorType: .serverError)
+                    ErrorView(viewModel: errorViewModel)
+                        .navigationBarBackButtonHidden(true)
                 }
+                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-}
-
-#Preview {
-    MainView()
 }
