@@ -194,7 +194,7 @@ struct MainView: View {
                                     }
                                 }
                                 
-                                path = []
+                                path.removeAll()
                             }
                         )
                         .toolbar(.hidden, for: .tabBar)
@@ -238,7 +238,6 @@ struct MainView: View {
                         .toolbar(.hidden, for: .tabBar)
                     
                 case Path.serverError:
-                    
                     let errorViewModel = ErrorViewModel(errorType: .serverError)
                     ErrorView(viewModel: errorViewModel)
                         .navigationBarBackButtonHidden(true)

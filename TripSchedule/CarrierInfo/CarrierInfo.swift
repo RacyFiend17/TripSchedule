@@ -7,7 +7,6 @@ struct CarrierInfo: View {
     init(viewModel: CarriersViewModel) {
             _viewModel = State(initialValue: viewModel)
         }
-
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
