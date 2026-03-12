@@ -3,13 +3,15 @@ import SwiftUI
 struct SelectionView<Item: SelectableItem>: View {
     
     let title: String
-    let items: [Item]
     let onSelect: (Item) -> Void
     
-    @State private var searchText = ""
+    @State private var viewModel: SelectionViewModel<Item>
+    @State private var isViewDisappeared = false
     
-    var filteredItems: [Item] {
-        searchText.isEmpty ? items : items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    init(title: String, viewModel: SelectionViewModel<Item>, onSelect: @escaping (Item) -> Void) {
+        self.title = title
+        self._viewModel = State(wrappedValue: viewModel)
+        self.onSelect = onSelect
     }
     
     var body: some View {
@@ -20,12 +22,12 @@ struct SelectionView<Item: SelectableItem>: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
                 
-                TextField("Введите запрос", text: $searchText)
+                TextField("Введите запрос", text: $viewModel.searchText)
                     .textFieldStyle(.plain)
                 
-                if !searchText.isEmpty {
+                if !viewModel.searchText.isEmpty {
                     Button {
-                        searchText = ""
+                        viewModel.searchText = ""
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(.gray)
@@ -38,10 +40,13 @@ struct SelectionView<Item: SelectableItem>: View {
             .cornerRadius(10)
             .padding(.horizontal, 16)
             
-            if filteredItems.isEmpty {
+            if viewModel.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.filteredItems.isEmpty {
                 VStack {
                     Spacer()
-                    Text(title == "Выбор города" ? "Город не найден" : "Станция не найдена")
+                    Text(title.contains("город") ? "Город не найден" : "Станция не найдена")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.ypBlack)
                     Spacer()
@@ -50,7 +55,7 @@ struct SelectionView<Item: SelectableItem>: View {
             } else {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(filteredItems) { item in
+                        ForEach(viewModel.filteredItems) { item in
                             Button {
                                 onSelect(item)
                             } label: {
@@ -74,13 +79,18 @@ struct SelectionView<Item: SelectableItem>: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarRole(.editor)
+        .onAppear {
+            viewModel.setViewDisappeared(false)
+        }
+        .onDisappear {
+            viewModel.setViewDisappeared(true)
+        }
+        .task {
+            if viewModel.items.isEmpty {
+                await viewModel.loadItems()
+            }
+        }
     }
 }
-#Preview {
-    SelectionView(title: "Выбор города", items: MockDataProvider.cities) { item in
-    }
-}
-
-
 
 

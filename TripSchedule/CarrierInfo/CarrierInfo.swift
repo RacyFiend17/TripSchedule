@@ -1,4 +1,5 @@
 import SwiftUI
+import Kingfisher
 
 struct CarrierInfo: View {
     @State private var viewModel: CarriersViewModel
@@ -6,11 +7,14 @@ struct CarrierInfo: View {
     init(viewModel: CarriersViewModel) {
             _viewModel = State(initialValue: viewModel)
         }
-
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Image(viewModel.selectedRoute?.carrier.imageName ?? "icon_name")
+            KFImage(URL(string: viewModel.selectedRoute?.carrier.logoURL ?? ""))
+                .placeholder {
+                    ProgressView() 
+                        .frame(height: 104)
+                }
                 .resizable()
                 .frame(maxWidth: .infinity)
                 .frame(height: 104)
@@ -35,7 +39,7 @@ struct CarrierInfo: View {
                     Text("Телефон")
                         .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(Color(.ypBlack))
-                    Text("\(viewModel.selectedRoute?.carrier.phoneNumber ?? "Нет данных о мобильном телефоне")")
+                    Text("\(viewModel.selectedRoute?.carrier.phone ?? "Нет данных о мобильном телефоне")")
                         .font(.system(size: 12, weight: .regular))
                         .foregroundStyle(Color(.ypBlue))
                 }

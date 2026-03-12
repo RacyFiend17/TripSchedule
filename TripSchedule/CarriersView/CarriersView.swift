@@ -34,13 +34,24 @@ struct CarriersView: View {
                     
                     VStack {
                         Spacer()
+                        
                         Text("Вариантов нет")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(.ypBlack)
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .hiddenWhen(!viewModel.filteredRoutes.isEmpty)
+                    .hiddenWhen(!viewModel.filteredRoutes.isEmpty || viewModel.isLoading)
+                    
+                    VStack {
+                        Spacer()
+                        
+                        ProgressView()
+                            .foregroundStyle(.ypBlack)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .hiddenWhen(!viewModel.isLoading)
                     
                     ScrollView {
                         LazyVStack(spacing: 8) {
@@ -91,4 +102,5 @@ struct CarriersView: View {
         }
     }
 }
+
 

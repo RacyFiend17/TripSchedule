@@ -1,4 +1,4 @@
-enum Path: String {
+enum MainPath: String {
     case fromCity
     case toCity
     case fromStation
@@ -6,5 +6,10 @@ enum Path: String {
     case filters
     case search
     case carrierInfo
+}
+
+enum SettingsPath: String {
     case userAgreement
+    case serverError
+    case noInternet
 }

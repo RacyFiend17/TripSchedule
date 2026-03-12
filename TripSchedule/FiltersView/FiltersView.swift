@@ -52,7 +52,6 @@ struct FiltersView: View {
         .background(Color(.ypWhite))
     }
     
-//    Для удобства делаю и кнопку и текст возможной для тапа, чтобы пользователь не нажимал именно на кружок
     private func radioButton(title: String, value: TransferFilter) -> some View {
         Button {
             viewModel.transferFilter = value
@@ -104,6 +103,3 @@ struct FiltersView: View {
     }
 }
 
-#Preview {
-    FiltersView(viewModel: CarriersViewModel())
-}

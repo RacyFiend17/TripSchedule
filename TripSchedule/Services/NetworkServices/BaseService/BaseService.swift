@@ -1,5 +1,4 @@
 class BaseService {
-    
     let client: Client
     let apiKey: String
     
