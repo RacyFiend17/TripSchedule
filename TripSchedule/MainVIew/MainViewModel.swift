@@ -22,12 +22,24 @@ final class MainViewModel {
     }
     
     func getAllCities() async throws -> [City] {
-        if let cached = allCitiesCache {
-            return cached
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            
+            if let cached = allCitiesCache {
+                return cached
+            }
+            
+            try Task.checkCancellation()
+            
+            let cities = try await NetworkClientProvider.shared.fetchAllCities()
+            
+            try Task.checkCancellation()
+            
+            allCitiesCache = cities
+            return cities
+        } onCancel: {
+            print("Запрос getAllCities отменен")
         }
-        let cities = try await NetworkClientProvider.shared.fetchAllCities()
-        allCitiesCache = cities
-        return cities
     }
 }
 

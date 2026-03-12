@@ -6,6 +6,7 @@ struct SelectionView<Item: SelectableItem>: View {
     let onSelect: (Item) -> Void
     
     @State private var viewModel: SelectionViewModel<Item>
+    @State private var isViewDisappeared = false
     
     init(title: String, viewModel: SelectionViewModel<Item>, onSelect: @escaping (Item) -> Void) {
         self.title = title
@@ -78,8 +79,16 @@ struct SelectionView<Item: SelectableItem>: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarRole(.editor)
+        .onAppear {
+            viewModel.setViewDisappeared(false)
+        }
+        .onDisappear {
+            viewModel.setViewDisappeared(true)
+        }
         .task {
-            await viewModel.loadItems()
+            if viewModel.items.isEmpty {
+                await viewModel.loadItems()
+            }
         }
     }
 }

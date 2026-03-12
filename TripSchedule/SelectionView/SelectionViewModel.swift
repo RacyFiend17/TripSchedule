@@ -7,9 +7,10 @@ final class SelectionViewModel<Item: SelectableItem> {
     
     var items: [Item] = []
     var searchText: String = ""
-    var error: Error?
     var isLoading: Bool = false
-    let onServerError: () -> Void
+    var isViewDisappeared: Bool = false
+    
+    let onError: (AppErrorType) -> Void
     
     private let fetchItems: @Sendable () async throws -> [Item]
     
@@ -17,20 +18,39 @@ final class SelectionViewModel<Item: SelectableItem> {
         searchText.isEmpty ? items : items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
     
-    init(fetchItems: @escaping @Sendable () async throws -> [Item], onServerError: @escaping () -> Void) {
+    init(fetchItems: @escaping @Sendable () async throws -> [Item], onError: @escaping (AppErrorType) -> Void) {
         self.fetchItems = fetchItems
-        self.onServerError = onServerError
+        self.onError = onError
     }
     
     func loadItems() async {
         isLoading = true
-        defer { isLoading = false }
+        
         do {
+            try Task.checkCancellation()
+            
             let result = try await fetchItems()
-            self.items = result
+            
+            try Task.checkCancellation()
+            
+            await MainActor.run {
+                self.items = result
+                self.isLoading = false
+            }
         } catch {
-            self.error = error
-            onServerError()
+            
+            if Task.isCancelled {
+                return
+            }
+
+            await MainActor.run {
+                self.isLoading = false
+                self.onError(mapNetworkError(error))
+            }
         }
+    }
+    
+    func setViewDisappeared(_ disappeared: Bool) {
+        isViewDisappeared = disappeared
     }
 }

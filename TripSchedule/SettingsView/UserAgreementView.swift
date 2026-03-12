@@ -42,7 +42,3 @@ struct UserAgreementView: View {
     }
 }
 
-#Preview {
-    SettingsView()
-        .environment(ThemeManager())
-}

@@ -80,7 +80,7 @@ extension NetworkClient {
             )
         }
         
-//        let sortedCities = cities.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
+//      let sortedCities = cities.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         let sortedCities = cities
         
         return sortedCities
