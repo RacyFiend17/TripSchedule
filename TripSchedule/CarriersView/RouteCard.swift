@@ -7,11 +7,11 @@ struct RouteCard: View {
     var body: some View {
         VStack{
             HStack(alignment: .top, spacing: 0) {
-                Image(route.carrierLogoName)
+                Image(route.carrier.logoName)
                     .resizable()
                     .frame(width: 38, height: 38)
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(route.carrierName)
+                    Text(route.carrier.name)
                         .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(.black)
                     
@@ -30,7 +30,7 @@ struct RouteCard: View {
                     .padding(.trailing, 7)
                 
             }
-            .padding([.leading, .top, .bottom], 14)
+            .padding([.leading, .vertical], 14)
             .frame(maxWidth: .infinity)
             
             
@@ -43,7 +43,7 @@ struct RouteCard: View {
                     .foregroundStyle(Color.ypGray)
                 Text(route.duration)
                     .font(.system(size: 12, weight: .regular))
-                    .padding([.leading, .trailing], 1)
+                    .padding(.horizontal, 1)
                     .foregroundStyle(.black)
                 Rectangle()
                     .frame(width: .infinity, height: 1)

@@ -4,6 +4,7 @@ import Observation
     
     var selectedTimes: Set<TimeFilter> = []
     var transferFilter: TransferFilter?
+    var selectedRoute: Route?
     
     private var routes: [Route] = MockDataProvider.routes
     
@@ -18,6 +19,7 @@ import Observation
         }
     }
     
+    
     private func matchesTransfer(_ route: Route) -> Bool {
         guard let transferFilter else { return true }
         
@@ -25,7 +27,7 @@ import Observation
         case .noTransfer:
             return !route.isTransfer
         case .yesTransfer:
-            return route.isTransfer
+            return true
         }
     }
     

@@ -8,18 +8,18 @@ extension AppErrorType {
     var imageName: String {
         switch self {
         case .noInternet:
-            return "noInternet"
+            "noInternet"
         case .serverError:
-            return "serverError"
+            "serverError"
         }
     }
     
     var title: String {
         switch self {
         case .noInternet:
-            return "Нет интернета"
+            "Нет интернета"
         case .serverError:
-            return "Ошибка сервера"
+            "Ошибка сервера"
         }
     }
 }

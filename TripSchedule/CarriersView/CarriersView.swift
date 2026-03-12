@@ -3,9 +3,22 @@ import SwiftUI
 struct CarriersView: View {
     let title: String
     
-    @State var viewModel: CarriersViewModel
+    @State private var viewModel: CarriersViewModel
     
-    let onSelect: () -> Void
+    let onCarrierCardSelect: () -> Void
+    let onFilterSelect: () -> Void
+    
+    init(
+        title: String,
+        viewModel: CarriersViewModel,
+        onCarrierCardSelect: @escaping () -> Void,
+        onFilterSelect: @escaping () -> Void
+    ) {
+        self.title = title
+        self.onCarrierCardSelect = onCarrierCardSelect
+        self.onFilterSelect = onFilterSelect
+        _viewModel = State(initialValue: viewModel)
+    }
     
     var body: some View {
         ZStack {
@@ -17,23 +30,32 @@ struct CarriersView: View {
                     .lineLimit(nil)
                     .padding(.vertical, 16)
                 
-                if viewModel.filteredRoutes.isEmpty {
-                                VStack {
-                                    Spacer()
-                                    Text("Вариантов нет")
-                                        .font(.system(size: 24, weight: .bold))
-                                        .foregroundColor(.ypBlack)
-                                    Spacer()
-                                }
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
+                ZStack {
+                    
+                    VStack {
+                        Spacer()
+                        Text("Вариантов нет")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(.ypBlack)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .hiddenWhen(!viewModel.filteredRoutes.isEmpty)
+                    
                     ScrollView {
                         LazyVStack(spacing: 8) {
                             ForEach(viewModel.filteredRoutes) { route in
-                                RouteCard(route: route)
+                                Button {
+                                    viewModel.selectedRoute = route
+                                    onCarrierCardSelect()
+                                } label: {
+                                    RouteCard(route: route)
+                                        .frame(maxWidth: .infinity)
+                                }
                             }
                         }
                     }
+                    .hiddenWhen(viewModel.filteredRoutes.isEmpty)
                 }
             }
             .padding(.horizontal, 16)
@@ -45,7 +67,7 @@ struct CarriersView: View {
             VStack(spacing: 0) {
                 Spacer()
                 Button {
-                    onSelect()
+                    onFilterSelect()
                 } label: {
                     HStack(spacing: 4) {
                         Text("Уточнить время")
@@ -61,7 +83,7 @@ struct CarriersView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 60)
                     .background(Color.ypBlue)
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding([.top, .horizontal], 16)
                     .padding(.bottom, 24)
                 }

@@ -11,7 +11,7 @@ struct TabBarView: View {
                     .renderingMode(.template)
             }
             .tag(0)
-            ErrorView(errorType: AppErrorType.serverError)
+            SettingsView()
             .tabItem {
                 Image("optionsTabBarItem")
                     .renderingMode(.template)
